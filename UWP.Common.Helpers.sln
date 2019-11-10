@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.138
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UWP.Common.Helpers", "UWP.Common.Helpers\UWP.Common.Helpers.csproj", "{A07AB3A3-D160-4B0D-B641-17CA7F749FCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UWP.Common.Helpers", "src\UWP.Common.Helpers.csproj", "{A07AB3A3-D160-4B0D-B641-17CA7F749FCC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE3224D2-B67D-452F-87AF-776360FDE491}"
 	ProjectSection(SolutionItems) = preProject

@@ -4,12 +4,20 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>Timothy Macharia</Authors>
     <Company>Neon Clouds</Company>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseExpression></PackageLicenseExpression>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Useful and re-usable methods when working in UWP</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>uwp, helpers, converters, controls</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Themes\Generic.xaml" />
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
