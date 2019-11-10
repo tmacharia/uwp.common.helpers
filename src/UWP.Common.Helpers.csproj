@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/tmacharia/uwp.common.helpers</RepositoryUrl>
     <PackageTags>uwp, helpers, converters, controls</PackageTags>
     <PackageId>UWP.Common.Helpers</PackageId>
-    <Version>0.0.2-rc-1</Version>
+    <Version>0.2-rc1</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
