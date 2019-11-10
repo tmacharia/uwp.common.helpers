@@ -9,7 +9,18 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Useful and re-usable methods when working in UWP</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Product>UWP.Common.Helpers</Product>
+    <Title>UWP.Common.Helpers</Title>
+    <PackageProjectUrl>https://github.com/tmacharia/uwp.common.helpers</PackageProjectUrl>
+    <Copyright>© Neon Clouds, 2019</Copyright>
+    <RepositoryUrl>https://github.com/tmacharia/uwp.common.helpers</RepositoryUrl>
     <PackageTags>uwp, helpers, converters, controls</PackageTags>
+    <PackageId>UWP.Common.Helpers</PackageId>
+    <Version>0.0.1</Version>
+    <NeutralLanguage>en</NeutralLanguage>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
