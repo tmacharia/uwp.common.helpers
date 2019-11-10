@@ -18,7 +18,7 @@
     <RepositoryUrl>https://github.com/tmacharia/uwp.common.helpers</RepositoryUrl>
     <PackageTags>uwp, helpers, converters, controls</PackageTags>
     <PackageId>UWP.Common.Helpers</PackageId>
-    <Version>0.0.1</Version>
+    <Version>0.2-rc1</Version>
     <NeutralLanguage>en</NeutralLanguage>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -33,13 +33,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" />
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="5.1.1" />
-    <PackageReference Include="Microsoft.UI.Xaml" Version="2.2.190917002" />
-    <PackageReference Include="runtime.win10-x86.Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.9" />
+    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="6.0.0-rc1.2" />
     <PackageReference Include="Shared.Common" Version="1.2.0" />
     <PackageReference Include="System.Runtime.InteropServices.WindowsRuntime" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.WindowsRuntime" Version="4.6.0" />
-    <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.6.0" />
+    <PackageReference Include="System.Runtime.WindowsRuntime.UI.Xaml" Version="4.7.0-preview2.19523.17" />
   </ItemGroup>
 
   <ItemGroup>
