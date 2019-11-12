@@ -30,7 +30,7 @@ namespace UWP.Common.Helpers
         public static Color InfoForeground = Colors.White;
         public static Color InfoBackground = "#0382dc".HexToColor();
         public static Color SuccessForeground = Colors.White;
-        public static Color SuccessBackground = "#14a232".HexToColor();
+        public static Color SuccessBackground = "#0F821E".HexToColor();
         public static Color WarningForeground = Colors.Black;
         public static Color WarningBackground = Colors.Yellow;
         public static Color ErrorForeground = Colors.White;

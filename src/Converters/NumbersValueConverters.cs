@@ -8,7 +8,7 @@ namespace UWP.Common.Helpers.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if(value != null)
+            if (value != null)
             {
                 return System.Convert.ToDouble(value) > 0 ? Visibility.Visible : Visibility.Collapsed;
             }
@@ -16,5 +16,8 @@ namespace UWP.Common.Helpers.Converters
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
+    }
+    class NumbersValueConverters
+    {
     }
 }
