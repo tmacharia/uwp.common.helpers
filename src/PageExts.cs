@@ -1,4 +1,6 @@
-﻿using Common;
+﻿using System;
+using System.Collections.Generic;
+using Common;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -10,11 +12,15 @@ namespace UWP.Common.Helpers
         private const string TopPrgStackKey = "topProgressStack";
         private const string TopPrgBarKey = "topProgressBar";
         private const string TopPrgTxtKey = "topProgressTxt";
-
-        private const string PrgRingStackKey = "progressRingStack";
-        private const string PrgRingTxtKey = "progressRingTxt";
         private const string PrgRingKey = "progressRing";
+        private const string PrgRingTxtKey = "progressRingTxt";
+        private const string PrgRingStackKey = "progressRingStack";
 
+        public static void ToggleLoaders(this Page page, bool isActive = true, string msg=null)
+        {
+            page.ToggleTopLoader(isActive, msg);
+            page.ToggleCenterProgress(isActive, msg);
+        }
         public static void ToggleTopLoader(this Page page, bool isActive = true, string msg = null, Color? progressColor=null)
         {
             page.LoadOnUI(() =>
@@ -145,6 +151,13 @@ namespace UWP.Common.Helpers
                     progressTxt.ClearText();
                 }
             });
+        }
+        public static Dictionary<string, string> BaseEventProps()
+        {
+            return new Dictionary<string, string>
+            {
+                { "PC", Environment.MachineName+$", {ZoneExts.CurrentCountry.ToString()}" }
+            };
         }
     }
 }
