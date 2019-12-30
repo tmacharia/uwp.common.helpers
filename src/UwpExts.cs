@@ -37,7 +37,6 @@ namespace UWP.Common.Helpers
         public static void Disable(this Control control) => control.IsEnabled = false;
         public static void ClearText(this TextBlock txt) => txt.Text = string.Empty;
         public static void ClearText(this Run run) => run.Text = string.Empty;
-        public static Brush ToBrush(this Color col) => new SolidColorBrush(col);
         public static async void LoadOnUI(this Page page, Action action)
         {
             var a = page.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
@@ -112,16 +111,6 @@ namespace UWP.Common.Helpers
                 { "PC", Environment.MachineName+$", {Utils.CurrentRegion}" }
             };
         }
-        //public static DataRequest LoadDefaults(this DataRequest req, string webUrl, string appWebUrl)
-        //{
-        //    var cur = Package.Current;
-        //    req.Data.Properties.ApplicationListingUri = new Uri($"ms-windows-store://pdp/?PFN={cur.Id.FamilyName}");
-        //    req.Data.Properties.ApplicationName = cur.DisplayName;
-        //    req.Data.Properties.PackageFamilyName = cur.Id.FamilyName;
-        //    req.Data.Properties.ContentSourceWebLink = webUrl.IsValid() ? new Uri(webUrl) : new Uri(appWebUrl);
-
-        //    return req;
-        //}
         public static bool IsCtrlKeyPressed(this Page page)
         {
             var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);

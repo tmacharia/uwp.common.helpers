@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Common;
+﻿using Common;
 using Windows.UI;
+using System.Linq;
+using Windows.UI.Xaml.Media;
+using System.Collections.Generic;
 
 namespace UWP.Common.Helpers
 {
@@ -23,6 +24,23 @@ namespace UWP.Common.Helpers
                     store.Add(hex, 1);
             });
             return store.OrderByDescending(x => x.Value).FirstOrDefault().Key;
+        }
+        public static Brush ToBrush(this Color col) => new SolidColorBrush(col);
+        public static SolidColorBrush ToSolidColorBrush(this Color col) => new SolidColorBrush(col);
+        public static SolidColorBrush ToggleOpacity(this SolidColorBrush brush, int? opacity = 100)
+        {
+            brush.Color = brush.Color.ToggleOpacity(opacity);
+            return brush;
+        }
+        public static Color ToggleOpacity(this Color col, int? opacity = 100)
+        {
+            int alpha = 255;
+            if (opacity.HasValue)
+            {
+                alpha = opacity.Value * 255 / 100;
+            }
+
+            return Color.FromArgb((byte)alpha, col.R, col.G, col.B);
         }
     }
 }
