@@ -21,7 +21,6 @@ namespace UWP.Common.Helpers.Converters
                 return parameter.ToString();
             return string.Empty;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
 }

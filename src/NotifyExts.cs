@@ -72,19 +72,19 @@ namespace UWP.Common.Helpers
         /// <summary>
         /// Set icon to use for <see cref="NotificationType.Info"/>
         /// </summary>
-        private static FrameworkElement InfoIcon = null;
+        //private static FrameworkElement InfoIcon = null;
         /// <summary>
         /// Set icon to use for <see cref="NotificationType.Error"/>
         /// </summary>
-        private static FrameworkElement ErrorIcon = null;
+        //private static FrameworkElement ErrorIcon = null;
         /// <summary>
         /// Set icon to use for <see cref="NotificationType.Success"/>
         /// </summary>
-        private static FrameworkElement SuccessIcon = null;
+        //private static FrameworkElement SuccessIcon;
         /// <summary>
         /// Set icon to use for <see cref="NotificationType.Warning"/>
         /// </summary>
-        private static FrameworkElement WarningIcon = null;
+        //private static FrameworkElement WarningIcon = null;
         #endregion
 
         #region Global Notification Settings
@@ -182,7 +182,6 @@ namespace UWP.Common.Helpers
                     a.grid.RenderTransform = null;
                     return;
                 };
-                
                 entry.Completed += EntryAnimation_Completed;
                 entry.Begin();
                 async void EntryAnimation_Completed(object sender, object e)

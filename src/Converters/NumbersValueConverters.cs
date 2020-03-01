@@ -14,10 +14,9 @@ namespace UWP.Common.Helpers.Converters
             }
             return Visibility.Collapsed;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
-    public class IntBooleanValueConverter : IValueConverter
+    public class IntToBooleanValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
@@ -28,7 +27,18 @@ namespace UWP.Common.Helpers.Converters
             }
             return false;
         }
-
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
+    }
+    public class DoubleVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value != null)
+            {
+                return System.Convert.ToDouble(value) > 0 ? Visibility.Visible : Visibility.Collapsed;
+            }
+            return Visibility.Collapsed;
+        }
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
     public class DoubleBooleanValueConverter : IValueConverter
@@ -42,22 +52,9 @@ namespace UWP.Common.Helpers.Converters
             }
             return false;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
-    public class DoubleVisibilityConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
-        {
-            if (value != null)
-            {
-                return System.Convert.ToDouble(value) > 0 ? Visibility.Visible : Visibility.Collapsed;
-            }
-            return Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
-    }
+    
     class NumbersValueConverters
     {
     }

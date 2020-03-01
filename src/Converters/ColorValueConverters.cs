@@ -1,21 +1,25 @@
 ﻿using System;
 using Common;
-using Windows.UI.Xaml;
+using Windows.UI;
 using Windows.UI.Xaml.Data;
 
 namespace UWP.Common.Helpers.Converters
 {
-    public class StringVisibilityConverter : IValueConverter
+    public class ColorOpacityValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            if(value != null)
+            if(value is Color col)
             {
-                return ((string)value).IsValid() ? Visibility.Visible : Visibility.Collapsed;
+                int? n = parameter.ToInt();
+                n = n.HasValue ? n : 100;
+                return col.ToggleOpacity(n);
             }
-            return Visibility.Collapsed;
+            return value;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
+    }
+    class ColorValueConverters
+    {
     }
 }
