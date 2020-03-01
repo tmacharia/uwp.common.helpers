@@ -10,16 +10,6 @@ namespace UWP.Common.Helpers
 {
     public static class Utils
     {
-        private static string _currentRegion = string.Empty;
-        public static string CurrentRegion => GetCurrentRegion();
-        private static string GetCurrentRegion()
-        {
-            if (_currentRegion.IsValid())
-                return _currentRegion;
-            
-            _currentRegion = ZoneExts.GetCurrentZone();
-            return _currentRegion;
-        }
         public static byte ToByte(this int i) => (byte)i;
         public static string Hex(this byte b) => b.ToString("X2");
         public static string ToHex(this Color c) => $"#{c.R.Hex()}{c.G.Hex()}{c.B.Hex()}";

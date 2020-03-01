@@ -17,16 +17,32 @@ namespace UWP.Common.Helpers.Converters
             => DateTimeConverterExts.IsNullOrMin(value) ? Visibility.Collapsed : Visibility.Visible;
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
+    public class ToDateTimeMomentConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is DateTimeOffset dto)
+            {
+                return dto.ToDateTimeMoment();
+            }
+            else if (value is DateTime dt)
+            {
+                return dt.ToDateTimeMoment();
+            }
+            return string.Empty;
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
+    }
     public class DateToMomentValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var dt = DateTimeConverterExts.CastToDateTime(value);
-            if (dt.HasValue)
-                return parameter == null ? dt.Value.ToMoment() : parameter.ToString().Replace(":0", dt.Value.ToMoment());
-            return "";
+            if(value is DateTime dt)
+            {
+                return dt.ToMoment();
+            }
+            return string.Empty;
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
     public static class DateTimeConverterExts

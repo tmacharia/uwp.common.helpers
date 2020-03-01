@@ -20,7 +20,6 @@ namespace UWP.Common.Helpers.Converters
             }
             return "0";
         }
-
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
 }

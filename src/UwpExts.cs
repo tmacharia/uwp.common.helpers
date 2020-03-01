@@ -20,9 +20,16 @@ namespace UWP.Common.Helpers
 {
     public static class UwpExts
     {
-        public static Color AccentColor = (Color)Application.Current.Resources["SystemAccentColor"];
+        //public static Color AccentColor = (Color)Application.Current.Resources["SystemAccentColor"];
 
-        
+        public static TElem GetElem<TElem>(this Page pg, string name)
+        {
+            return (TElem)pg.FindName(name);
+        }
+        public static TElem GetElem<TElem>(this Panel panel, string name)
+        {
+            return (TElem)panel.FindName(name);
+        }
         public static bool IsConnected => HasInternetConnection();
         public static bool HasInternet(this Page page) => HasInternetConnection();
         public static bool HasInternetConnection()
@@ -108,7 +115,7 @@ namespace UWP.Common.Helpers
         {
             return new Dictionary<string, string>
             {
-                { "PC", Environment.MachineName+$", {Utils.CurrentRegion}" }
+                { "PC", Environment.MachineName+$", {ZoneExts.CurrentGeo}" }
             };
         }
         public static bool IsCtrlKeyPressed(this Page page)

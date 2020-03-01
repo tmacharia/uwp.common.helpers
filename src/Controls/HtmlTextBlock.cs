@@ -61,14 +61,13 @@ namespace UWP.Common.Helpers.Controls
 
         private static void OnHtmlChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            HtmlTextBlock iwlc = d as HtmlTextBlock; //null checks omitted
-            if(e.NewValue != null || e.OldValue != null)
+            if (e.NewValue != null || e.OldValue != null)
             {
                 if (_canvas == null) return;
                 _canvas.Blocks.Clear();
                 Paragraph p = new Paragraph();
                 Span span;
-                if(e.NewValue != null)
+                if (e.NewValue != null)
                 {
                     string html = e.NewValue.ToString();
                     if (Regex.IsMatch(html, Utils.UrlRegex, RegexOptions.IgnoreCase))
