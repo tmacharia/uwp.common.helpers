@@ -59,13 +59,21 @@ namespace UWP.Common.Helpers
                         IsIndeterminate = true,
                         VerticalAlignment = VerticalAlignment.Top,
                         HorizontalAlignment = HorizontalAlignment.Stretch,
-                        Foreground = progressColor.HasValue ? progressColor.Value.ToBrush() : UwpExts.AccentColor.ToBrush()
+                        //Foreground = progressColor.HasValue ? progressColor.Value.ToBrush() : UwpExts.AccentColor.ToBrush()
                     };
                     panel.Children.Add(text);
                     panel.Children.Add(bar);
                     panel.UnHide();
 
                     var grid = (Grid)page.Content;
+                    if(grid.ColumnDefinitions != null)
+                    {
+                        Grid.SetColumnSpan(panel, grid.ColumnDefinitions.Count);
+                    }
+                    if (grid.RowDefinitions != null)
+                    {
+                        Grid.SetRowSpan(panel, grid.RowDefinitions.Count);
+                    }
                     grid.Children.Add(panel);
                     progressStack = panel;
                     progressBar = bar;
@@ -125,17 +133,26 @@ namespace UWP.Common.Helpers
                         Width = 50,
                         IsActive = true,
                         Margin = new Thickness(0,0,0,20),
-                        Foreground = progressColor.HasValue ? progressColor.Value.ToBrush() : UwpExts.AccentColor.ToBrush()
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        //Foreground = progressColor.HasValue ? progressColor.Value.ToBrush() : UwpExts.AccentColor.ToBrush()
                     };
                     TextBlock txt = new TextBlock
                     {
                         Name = PrgRingTxtKey,
-                        HorizontalAlignment = HorizontalAlignment.Left
+                        HorizontalAlignment = HorizontalAlignment.Center
                     };
                     panel.Children.Add(ring);
                     panel.Children.Add(txt);
                     panel.Hide();
                     var grid = (Grid)page.Content;
+                    if (grid.ColumnDefinitions != null)
+                    {
+                        Grid.SetColumnSpan(panel, grid.ColumnDefinitions.Count);
+                    }
+                    if (grid.RowDefinitions != null)
+                    {
+                        Grid.SetRowSpan(panel, grid.RowDefinitions.Count);
+                    }
                     grid.Children.Add(panel);
                     progressStack = panel;
                     progressTxt = txt;
