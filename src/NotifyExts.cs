@@ -111,7 +111,7 @@ namespace UWP.Common.Helpers
         /// <summary>
         /// Offset distance for a notification on the Y-Axis. Default is 150
         /// </summary>
-        public static int YOffset = 100;
+        public static int YOffset = 150;
         /// <summary>
         /// Offset distance for a notification on the X-Axis. Default is 100
         /// </summary>
