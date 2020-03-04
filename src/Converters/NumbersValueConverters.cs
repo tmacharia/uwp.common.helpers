@@ -41,7 +41,7 @@ namespace UWP.Common.Helpers.Converters
         }
         public object ConvertBack(object value, Type targetType, object parameter, string language) => value;
     }
-    public class DoubleBooleanValueConverter : IValueConverter
+    public class DoubleToBooleanValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
