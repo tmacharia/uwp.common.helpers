@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel;
+using System.Runtime.CompilerServices;
 
 namespace UWP.Common.Helpers
 {
@@ -108,6 +109,16 @@ namespace UWP.Common.Helpers
                 {
                     return;
                 }
+            }
+        }
+        public static void CopyToClipboard(this Page pg, string txt) => CopyToClipboard(txt);
+        public static void CopyToClipboard(string txt)
+        {
+            if (txt.IsValid())
+            {
+                DataPackage dp = new DataPackage();
+                dp.SetText(txt);
+                Clipboard.SetContent(dp);
             }
         }
         public static Dictionary<string, string> BaseEventProps(this Page page) => BaseEventProps();

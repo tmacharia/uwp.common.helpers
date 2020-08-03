@@ -6,8 +6,10 @@ using Windows.UI.Xaml;
 
 namespace UWP.Common.Helpers.Models
 {
+    public delegate void DoubleEventHandler(double d);
     public delegate void PlayingEventHandler(PlayProgress progress);
     public delegate void PlayerStateChangeEventHandler(MediaPlaybackSession session);
+    public delegate void MediaErrorEventHandler(MediaPlayerFailedEventArgs args);
     public class AudioPlayer : MutableModel
     {
         private readonly DispatcherTimer Timer;
@@ -15,10 +17,32 @@ namespace UWP.Common.Helpers.Models
         private double _volume;
         public int DispatcherTimerSecs { get; set; }
 
+        /// <summary>
+        /// Occurs when the buffering progress changes.
+        /// </summary>
+        public event DoubleEventHandler OnBuffer;
+        /// <summary>
+        /// Occurs when the download progress changes.
+        /// </summary>
+        public event DoubleEventHandler OnDownload;
         public event PlayingEventHandler OnPlaying;
+        /// <summary>
+        /// Occurs when media playback is stopped and the MediaSource cleared.
+        /// </summary>
         public event EmptyEventHandler OnClosed;
+        /// <summary>
+        /// Occurs when the media finishes playback.
+        /// </summary>
         public event EmptyEventHandler OnMediaEnded;
         public event PlayerStateChangeEventHandler OnStateChanged;
+        /// <summary>
+        /// Occurs when an error is encountered with the media.
+        /// </summary>
+        public event MediaErrorEventHandler OnError;
+        /// <summary>
+        /// Occurs when the media successfully opens.
+        /// </summary>
+        public event PlayerStateChangeEventHandler OnOpened;
 
         /// <summary>
         /// Creates a new instance of an <see cref="AudioPlayer"/>
@@ -41,6 +65,10 @@ namespace UWP.Common.Helpers.Models
             MediaPlayer.Volume = defaultVolume;
             MediaPlayer.AutoPlay = autoPlay;
             MediaPlayer.AudioCategory = MediaPlayerAudioCategory.Media;
+            MediaPlayer.MediaFailed += (s, e) => OnError?.Invoke(e);
+            MediaPlayer.MediaOpened += (s, e) => OnOpened?.Invoke(s.PlaybackSession);
+            MediaPlayer.PlaybackSession.BufferingProgressChanged += (s, e) => OnBuffer?.Invoke(s.BufferingProgress);
+            MediaPlayer.PlaybackSession.DownloadProgressChanged += (s, e) => OnDownload?.Invoke(s.DownloadProgress);
         }
 
         public MediaPlayer MediaPlayer { get; }
@@ -88,6 +116,16 @@ namespace UWP.Common.Helpers.Models
             MediaPlayer.Pause();
             Timer.Stop();
         }
+        public void SkipTo(double secs, double total = 0)
+        {
+            if (MediaPlayer.PlaybackSession.CanSeek)
+            {
+                double _total = total > 0 ? total : MediaPlayer.GetTotalSeconds();
+                secs = secs < 0 ? 0 : secs;
+                if (secs < _total)
+                    MediaPlayer.PlaybackSession.Position = TimeSpan.FromSeconds(secs);
+            }
+        }
         public void Stop() => Close();
         public void Close()
         {
@@ -101,45 +139,5 @@ namespace UWP.Common.Helpers.Models
             DispatcherTimerSecs++;
             OnPlaying?.Invoke(new PlayProgress(MediaPlayer.PlaybackSession.Position, MediaPlayer.PlaybackSession.NaturalDuration));
         }
-    }
-    public struct PlayProgress
-    {
-        private TimeSpan TotalDuration { get; set; }
-
-        public PlayProgress(TimeSpan position, TimeSpan total)
-        {
-            CurrentPosition = position;
-            TotalDuration = total;
-        }
-        public TimeSpan CurrentPosition { get; set; }
-        /// <summary>
-        /// Position of the currently playing media in seconds.
-        /// </summary>
-        public double ElapsedSeconds => CurrentPosition.TotalSeconds;
-        /// <summary>
-        /// Full/Total Duration of the currently playing media in seconds.
-        /// </summary>
-        public double TotalSeconds => TotalDuration.TotalSeconds;
-        /// <summary>
-        /// Seconds remaining for currently playing media to reach the end.
-        /// </summary>
-        public double RemainingSeconds => TotalSeconds - ElapsedSeconds;
-        /// <summary>
-        /// Percentage duration progress played out of the total duration
-        /// </summary>
-        public double PercentageProgress => (ElapsedSeconds / TotalSeconds) * 100;
-
-        public override bool Equals(object obj)
-        {
-            if (obj is PlayProgress p)
-            {
-                return GetHashCode() == p.GetHashCode();
-            }
-            return false;
-        }
-
-        public override int GetHashCode() => Convert.ToInt32((ElapsedSeconds + TotalSeconds)).GetHashCode();
-        public static bool operator ==(PlayProgress left, PlayProgress right) => left.Equals(right);
-        public static bool operator !=(PlayProgress left, PlayProgress right) => !(left == right);
     }
 }
