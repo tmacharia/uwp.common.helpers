@@ -9,7 +9,7 @@ namespace UWP.Common.Helpers
 {
     public static class TileExts
     {
-        private const int TileExpiryInDays = 2;
+        public const int TileExpiryInDays = 2;
 
         public static void UpdateBadgeGlyph(this Page page, BadgeGlyph glyph) => UpdateBadgeGlyph(glyph);
         public static void UpdateBadgeGlyph(BadgeGlyph glyph)
@@ -41,6 +41,8 @@ namespace UWP.Common.Helpers
         }
         public static void CreateImageTileNotification(this Page page, string mediumImageUrl, string largeImageUrl) 
             => UpdateTileNotificationContent(ImageTileContent(mediumImageUrl, largeImageUrl));
+        public static void CreateImageTileNotification(this Page page, string imageUrl)
+            => UpdateTileNotificationContent(ImageTileContent(imageUrl));
         public static void CreateBasicTileNotification(this Page page, string title, string subTitle, string caption)
             => UpdateTileNotificationContent(BasicTileContent(title, subTitle, caption));
 
@@ -64,19 +66,6 @@ namespace UWP.Common.Helpers
             catch (Exception)
             { }
         }
-        private static TileContent ImageTileContent(string[] mediumUrls, string[] largeUrls)
-        {
-            return new TileContent()
-            {
-                Visual = new TileVisual()
-                {
-                    Branding = TileBranding.Auto,
-                    TileMedium = GenerateImageTileBinding(mediumUrls),
-                    TileLarge = GenerateImageTileBinding(largeUrls),
-                    TileWide = GenerateImageTileBinding(largeUrls)
-                }
-            };
-        }
         private static TileContent ImageTileContent(string mediumImageUrl, string largeImageUrl)
         {
             return new TileContent()
@@ -87,6 +76,20 @@ namespace UWP.Common.Helpers
                     TileMedium = GenerateImageTileBinding(mediumImageUrl),
                     TileLarge = GenerateImageTileBinding(largeImageUrl),
                     TileWide = GenerateImageTileBinding(largeImageUrl)
+                }
+            };
+        }
+        private static TileContent ImageTileContent(string imageUrl)
+        {
+            return new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+                    Branding = TileBranding.None,
+                    TileSmall = GenerateImageTileBinding(imageUrl),
+                    TileMedium = GenerateImageTileBinding(imageUrl),
+                    TileLarge = GenerateImageTileBinding(imageUrl),
+                    TileWide = GenerateImageTileBinding(imageUrl)
                 }
             };
         }

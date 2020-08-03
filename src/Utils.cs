@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 using Common;
 using Windows.Data.Html;
@@ -31,7 +29,14 @@ namespace UWP.Common.Helpers
                             int.Parse(hex.Substring(6, 2), NumberStyles.HexNumber).ToByte());
             return col;
         }
-        public static string FromHtmlToText(this string html) => HtmlUtilities.ConvertToText(html);
+        public static string FromHtmlToText(this string html)
+        {
+            if (html.IsValid())
+            {
+                return HtmlUtilities.ConvertToText(html);
+            }
+            return string.Empty;
+        }
         public static bool IsValidUrl(this string s) => Regex.IsMatch(s, UrlRegex);
         public static bool ContainsAnyUrl(this string text) => Regex.IsMatch(text, UrlRegex);
         public static string SanifUrl(this string badUrl)
@@ -56,8 +61,5 @@ namespace UWP.Common.Helpers
         }
 
         public const string UrlRegex = @"(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})";
-
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> ts)
-            => new ObservableCollection<T>(ts);
     }
 }

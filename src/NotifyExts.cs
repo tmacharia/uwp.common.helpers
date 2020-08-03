@@ -91,7 +91,7 @@ namespace UWP.Common.Helpers
         /// <summary>
         /// Timeout Duration for each notification. Default is 2000(ms)
         /// </summary>
-        public static int TimeoutDuration = 2000;
+        public static int TimeoutDuration = 3000;
         /// <summary>
         /// Animation duration for entry & exit of notifications. Default is 400(ms)
         /// </summary>
@@ -103,7 +103,7 @@ namespace UWP.Common.Helpers
         /// <summary>
         /// Corner Radius of the notification bubble.
         /// </summary>
-        public static int CornerRadius = 2;
+        public static int CornerRadius = 15;
         /// <summary>
         /// Notification bubble inner padding.
         /// </summary>
@@ -223,8 +223,8 @@ namespace UWP.Common.Helpers
             }.ModifyAnimationBasedOnPosition(AnimationType.Entry, pos);
             DoubleAnimation d2_exit = new DoubleAnimation
             {
-                Duration = new Duration(TimeSpan.FromMilliseconds(e)),
-                EasingFunction = new CircleEase() { EasingMode = EasingMode.EaseInOut, }
+                Duration = new Duration(TimeSpan.FromMilliseconds(AnimationDuration*4)),
+                EasingFunction = new CircleEase() { EasingMode = EasingMode.EaseOut, }
             }.ModifyAnimationBasedOnPosition(AnimationType.Exit, pos);
             FadeInThemeAnimation fade_in = new FadeInThemeAnimation
             {
@@ -232,7 +232,7 @@ namespace UWP.Common.Helpers
             };
             FadeOutThemeAnimation fade_out = new FadeOutThemeAnimation
             {
-                BeginTime = TimeSpan.FromMilliseconds(e/3),
+                BeginTime = TimeSpan.FromMilliseconds(e/2),
                 Duration = new Duration(TimeSpan.FromMilliseconds(e))
             };
             Storyboard.SetTarget(fade_in, grid);
@@ -280,7 +280,7 @@ namespace UWP.Common.Helpers
             else if (pos == NotificationPosition.BottomCenter)
             {
                 from = type == AnimationType.Entry ? 0 : YOffset.Negate();
-                to = type == AnimationType.Entry ? YOffset.Negate() : (YOffset * 2).Negate();
+                to = type == AnimationType.Entry ? (YOffset*1.4).Negate() : 0;
             }
             else if (pos == NotificationPosition.BottomRight)
             {
