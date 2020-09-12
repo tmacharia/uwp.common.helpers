@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Common;
 using Microsoft.Toolkit.Uwp.Notifications;
 using Windows.Data.Xml.Dom;
@@ -45,6 +47,10 @@ namespace UWP.Common.Helpers
             => UpdateTileNotificationContent(ImageTileContent(imageUrl));
         public static void CreateBasicTileNotification(this Page page, string title, string subTitle, string caption)
             => UpdateTileNotificationContent(BasicTileContent(title, subTitle, caption));
+        public static void CreateTileNotification(Uri imageUrl, string text)
+            => UpdateTileNotificationContent(ImageTileContent(imageUrl, text));
+        public static void CreateTileNotification(Uri imageUrl, string text, Uri wideImageUrl = default, string display = default, string desc = default)
+            => UpdateTileNotificationContent(ImageTileContent(imageUrl, text, wideImageUrl, display, desc));
 
         private static void UpdateTileNotificationContent(TileContent tile)
         {
@@ -52,20 +58,59 @@ namespace UWP.Common.Helpers
             {
                 XmlDocument xml = new XmlDocument();
                 xml.LoadXml(tile.GetContent());
-                var notification = new TileNotification(xml)
-                {
-                    ExpirationTime = DateTimeOffset.UtcNow.AddDays(TileExpiryInDays)
-                };
                 var updater = TileUpdateManager.CreateTileUpdaterForApplication();
-                updater.Clear();
                 if (updater != null)
                 {
-                    updater.Update(notification);
+                    updater.EnableNotificationQueue(true);
+                    updater.Update(new TileNotification(xml)
+                    {
+                        Tag = tile.Visual.ContentId.GetHashCode().ToString(),
+                        ExpirationTime = DateTimeOffset.Now.AddDays(TileExpiryInDays)
+                    });
                 }
             }
             catch (Exception)
             { }
         }
+        public static void ClearTiles()
+        {
+            var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            if (updater != null)
+            {
+                updater.Clear();
+            }
+        }
+        private static TileContent ImageTileContent(Uri imageUrl, string text, Uri wideImageUrl=default, string display=default, string desc = default)
+        {
+            return new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+                    Branding = TileBranding.Auto,
+                    DisplayName = display.IsValid() ? display : string.Empty,
+                    TileMedium = GenerateImageTileBinding(imageUrl, text, false, desc),
+                    TileLarge = GenerateImageTileBinding(imageUrl, text, true, desc),
+                    TileWide = GenerateImageTileBinding(wideImageUrl ?? imageUrl, text, true, desc),
+                    ContentId = imageUrl != null ? imageUrl.OriginalString : text.GetHashCode().ToString()
+                }
+            };
+        }
+        private static TileBinding GenerateImageTileBinding(Uri imageUrl, string text = default, bool isLarge = false,string desc=default)
+        {
+            var ctx = new TileBindingContentAdaptive()
+            {
+                PeekImage = new TilePeekImage() { Source = imageUrl != null ? imageUrl.OriginalString : "" },
+                TextStacking = (isLarge && desc.IsValid()) ? TileTextStacking.Top : TileTextStacking.Bottom
+            };
+            AdaptiveTextStyle ats = isLarge ? AdaptiveTextStyle.Caption : AdaptiveTextStyle.CaptionSubtle;
+            ctx.Children.Add(new AdaptiveText() { Text = text.Trim(), HintMaxLines = 2, HintStyle = ats });
+            if (isLarge && desc.IsValid())
+            {
+                ctx.Children.Add(new AdaptiveText() { Text = desc.Trim().FromHtmlToText(), HintMaxLines = 5, HintWrap = true, HintStyle = AdaptiveTextStyle.CaptionSubtle });
+            }
+            return new TileBinding() { Content = ctx };
+        }
+
         private static TileContent ImageTileContent(string mediumImageUrl, string largeImageUrl)
         {
             return new TileContent()
@@ -124,7 +169,7 @@ namespace UWP.Common.Helpers
             }
             return null;
         }
-        private static TileBinding GenerateImageTileBinding(string url)
+        private static TileBinding GenerateImageTileBinding(string url,string alternate=default)
         {
             return new TileBinding()
             {
@@ -132,10 +177,22 @@ namespace UWP.Common.Helpers
                 {
                     Images =
                     {
-                        new TileBasicImage() { Source = url }
+                        new TileBasicImage() { Source = url,AlternateText = alternate.IsValid()?alternate:string.Empty }
                     }
                 }
             };
+        }
+        private static TileBinding GenerateImageTileBinding(List<KeyValuePair<string, string>> pairs)
+        {
+            if (pairs != null && pairs.Count > 0)
+            {
+                return new TileBinding
+                {
+                    Branding = TileBranding.NameAndLogo,
+                    Content = TileContentBuilder.CreatePhotosTileContent(pairs.Select(x => new TileBasicImage() { Source = x.Key, AlternateText = x.Value }))
+                };
+            }
+            return null;
         }
         private static TileBinding GenerateBasicTileBinding(string title, string subTitle, string caption)
         {

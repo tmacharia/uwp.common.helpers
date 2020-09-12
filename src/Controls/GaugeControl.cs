@@ -165,5 +165,4 @@ namespace UWP.Common.Helpers.Controls
         }
         #endregion
     }
-
 }

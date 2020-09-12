@@ -1,7 +1,11 @@
 ﻿using System;
 using Common;
 using Common.Models;
+using Windows.Media;
+using Windows.Media.Core;
 using Windows.Media.Playback;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 
 namespace UWP.Common.Helpers.Models
@@ -72,6 +76,9 @@ namespace UWP.Common.Helpers.Models
         }
 
         public MediaPlayer MediaPlayer { get; }
+        /// <summary>
+        /// Whether to autoplay media.
+        /// </summary>
         public bool AutoPlay
         {
             get { return _autoPlay; }
@@ -82,6 +89,9 @@ namespace UWP.Common.Helpers.Models
                 NotifyPropertyChanged();
             }
         }
+        /// <summary>
+        /// Default volume to set. Min-0, Max=1
+        /// </summary>
         public double Volume
         {
             get { return _volume; }
@@ -95,6 +105,30 @@ namespace UWP.Common.Helpers.Models
         public bool IsPlaying => State == MediaPlaybackState.Playing;
         public MediaPlaybackState State => MediaPlayer.PlaybackSession.PlaybackState;
 
+        public void SetMediaDisplay(StorageFile file, RandomAccessStreamReference img,string title=default,string subtitle=default)
+        {
+            try
+            {
+                MediaPlaybackItem item = new MediaPlaybackItem(MediaSource.CreateFromStorageFile(file))
+                {
+                    AutoLoadedDisplayProperties = AutoLoadedDisplayPropertyKind.MusicOrVideo
+                };
+                var props = item.GetDisplayProperties();
+                props.Type = MediaPlaybackType.Video;
+                props.VideoProperties.Title = title.IsValid() ? title : file.DisplayName;
+                props.VideoProperties.Subtitle = subtitle.IsValid() ? subtitle : string.Empty;
+                if (img != null)
+                {
+                    props.Thumbnail = img;
+                }
+                item.ApplyDisplayProperties(props);
+                MediaPlayer.Source = item;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public void ToggleState()
         {
             if (State == MediaPlaybackState.Playing)
@@ -123,7 +157,9 @@ namespace UWP.Common.Helpers.Models
                 double _total = total > 0 ? total : MediaPlayer.GetTotalSeconds();
                 secs = secs < 0 ? 0 : secs;
                 if (secs < _total)
+                {
                     MediaPlayer.PlaybackSession.Position = TimeSpan.FromSeconds(secs);
+                }
             }
         }
         public void Stop() => Close();
