@@ -2,57 +2,42 @@
 using System.Collections.Generic;
 using Common;
 using Windows.Networking.Connectivity;
-using Windows;
 using Windows.System;
-using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Popups;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Media;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.ApplicationModel;
-using System.Runtime.CompilerServices;
 
 namespace UWP.Common.Helpers
 {
     public static class UwpExts
     {
-        //public static Color AccentColor = (Color)Application.Current.Resources["SystemAccentColor"];
-
-        public static TElem GetElem<TElem>(this Page pg, string name)
-        {
-            return (TElem)pg.FindName(name);
-        }
-        public static TElem GetElem<TElem>(this Panel panel, string name)
-        {
-            return (TElem)panel.FindName(name);
-        }
         public static bool IsConnected => HasInternetConnection();
         public static bool HasInternet(this Page page) => HasInternetConnection();
         public static bool HasInternetConnection()
         {
             var connectionProfile = NetworkInformation.GetInternetConnectionProfile();
-            return (connectionProfile != null && connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+            return connectionProfile != null && connectionProfile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess;
         }
-        public static bool IsVisible(this FrameworkElement elem) => elem.Visibility == Visibility.Visible ? true : false;
-        public static void Hide(this FrameworkElement elem) => elem.Visibility = Visibility.Collapsed;
-        public static void UnHide(this FrameworkElement elem) => elem.Visibility = Visibility.Visible;
+        public static bool IsCtrlOrShiftKeyPressed(this Page pg) => pg.IsCtrlKeyPressed() || pg.IsShiftKeyPressed();
+        public static bool IsCtrlKeyPressed(this Page pg)
+        {
+            var CtrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
+            return (CtrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
+        }
+        public static bool IsShiftKeyPressed(this Page pg)
+        {
+            var ShiftState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Shift);
+            return (ShiftState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
+        }
+        
         public static void Enable(this Control control) => control.IsEnabled = true;
         public static void Disable(this Control control) => control.IsEnabled = false;
         public static void ClearText(this TextBlock txt) => txt.Text = string.Empty;
         public static void ClearText(this Run run) => run.Text = string.Empty;
-        public static async void LoadOnUI(this Page page, Action action)
-        {
-            var a = page.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => action());
-            while (a.Status == AsyncStatus.Started)
-            {
-                await Task.Delay(100);
-            }
-        }
         public static async void ShowMessageDialog(this Page page, string title = null, string message = null)
         {
             var a = ShowMessageDialog(title, message);
@@ -128,11 +113,6 @@ namespace UWP.Common.Helpers
             {
                 { "PC", Environment.MachineName+$", {ZoneExts.CurrentGeo}" }
             };
-        }
-        public static bool IsCtrlKeyPressed(this Page page)
-        {
-            var ctrlState = CoreWindow.GetForCurrentThread().GetKeyState(VirtualKey.Control);
-            return (ctrlState & CoreVirtualKeyStates.Down) == CoreVirtualKeyStates.Down;
         }
     }
 }
